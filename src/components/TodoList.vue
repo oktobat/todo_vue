@@ -2,7 +2,7 @@
   <section>
     <ul>
       <li v-for="item in todos" :key="item.id">
-        <input type="checkbox" v-model="item.modify">
+        <input type="checkbox" v-model="item.modify" @click="onToggle(item.id)">
         <span :class="{on:item.modify}">{{ item.id }}번 {{ item.text }}</span>
         <button type="button" @click="onRemove(item.id)">
           <i class="fa-solid fa-trash-can"></i>
@@ -19,6 +19,9 @@ export default {
   methods:{
     onRemove(id) {
       this.$emit("onRemove", id)
+    },
+    onToggle(id){
+      this.$emit("onToggle", id)
     }
   }
 };

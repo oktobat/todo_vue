@@ -2,8 +2,8 @@
   <div id="container">
     <TodoHeader></TodoHeader>
     <TodoInput @addTodo="addTodo"></TodoInput>
-    <TodoList :todos="todos" @onRemove="onRemove"></TodoList>
-    <TodoFooter></TodoFooter>
+    <TodoList :todos="todos" @onRemove="onRemove" @onToggle="onToggle"></TodoList>
+    <TodoFooter @finishRemove="finishRemove" @allRemove="allRemove"></TodoFooter>
   </div>
 </template>
 
@@ -37,7 +37,11 @@ export default {
     let todos = JSON.parse(localStorage.getItem("todos"))
     if (id){
       this.id = id
+    }
+    if (todos) {
       this.todos = todos
+    } else {
+      this.todos = []
     }
   },
   methods:{
@@ -50,6 +54,25 @@ export default {
     },
     onRemove(id) {
       this.todos = this.todos.filter((value)=> value.id !== id )
+      localStorage.setItem("todos", JSON.stringify(this.todos))
+    },
+    finishRemove(){
+      this.todos = this.todos.filter((value)=>{
+        return value.modify == false
+      })
+      localStorage.setItem("todos", JSON.stringify(this.todos))
+    },
+    allRemove(){
+      this.todos = []
+      // localStorage.setItem("todos", JSON.stringify(this.todos))
+      localStorage.removeItem("todos")
+    },
+    onToggle(num){
+      this.todos.map((item)=>{
+        if (item.id == num) {
+          item.modify = !item.modify
+        }
+      })
       localStorage.setItem("todos", JSON.stringify(this.todos))
     }
   }
