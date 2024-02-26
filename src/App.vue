@@ -2,7 +2,7 @@
   <div id="container">
     <TodoHeader></TodoHeader>
     <TodoInput @addTodo="addTodo"></TodoInput>
-    <TodoList :todos="todos" @onRemove="onRemove" @onToggle="onToggle"></TodoList>
+    <TodoList :todos="todos" @onRemove="onRemove" @onToggle="onToggle" @onUpdate="onUpdate" @onInput="onInput"></TodoList>
     <TodoFooter @finishRemove="finishRemove" @allRemove="allRemove"></TodoFooter>
   </div>
 </template>
@@ -18,11 +18,12 @@ export default {
   name: "App",
   data(){
     return { 
+      flag:true,
       id:0,
       todos : [ 
-        // {id:0, text:'할일1', modify:false },
-        // {id:1, text:'할일2', modify:true },
-        // {id:2, text:'할일3', modify:false },
+        // {id:0, text:'할일1', modify:false, update:true },
+        // {id:1, text:'할일2', modify:true, update:true },
+        // {id:2, text:'할일3', modify:false, update:true },
       ]
     }
   },
@@ -47,7 +48,7 @@ export default {
   methods:{
     addTodo(text){
       // console.log(text)
-      this.todos.push({ id:this.id, text:text, modify:false })
+      this.todos.push({ id:this.id, text:text, modify:false, update:true })
       this.id++
       localStorage.setItem("id", this.id)
       localStorage.setItem("todos", JSON.stringify(this.todos))
@@ -63,7 +64,9 @@ export default {
       localStorage.setItem("todos", JSON.stringify(this.todos))
     },
     allRemove(){
-      this.todos = []
+      // this.todos = []
+      this.todos.splice(0, this.todos.length)
+
       // localStorage.setItem("todos", JSON.stringify(this.todos))
       localStorage.removeItem("todos")
     },
@@ -74,6 +77,23 @@ export default {
         }
       })
       localStorage.setItem("todos", JSON.stringify(this.todos))
+    },
+    onUpdate(num){
+        this.todos.map((item)=>{
+          if (item.id == num) {
+            item.update = !item.update
+          } else {
+            item.update = true
+          }
+       })
+       localStorage.setItem("todos", JSON.stringify(this.todos))      
+    },
+    onInput(num, text){
+      this.todos.map((item)=>{
+          if (item.id == num) {
+            item.text = text
+          }
+       })
     }
   }
 };
