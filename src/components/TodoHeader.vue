@@ -1,12 +1,21 @@
 <template>
   <header>
-    <h1>일정관리앱</h1>
+    <h1>일정관리앱 {{ complete }}/{{ total }}건 처리</h1>
   </header>
 </template>
 
 <script>
 export default {
   name: "TodoHeader",
+  props:["todos"],
+  computed:{
+    complete(){
+        return this.todos.filter(item=>item.modify==true).length
+    },
+    total(){
+        return this.todos.length
+    }
+  }
 };
 </script>
 

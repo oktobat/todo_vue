@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <TodoHeader></TodoHeader>
+    <TodoHeader :todos="todos"></TodoHeader>
     <TodoInput @addTodo="addTodo"></TodoInput>
     <TodoList :todos="todos" @onRemove="onRemove" @onToggle="onToggle" @onUpdate="onUpdate" @onInput="onInput"></TodoList>
     <TodoFooter @finishRemove="finishRemove" @allRemove="allRemove"></TodoFooter>
